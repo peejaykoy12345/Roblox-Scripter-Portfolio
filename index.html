@@ -1,0 +1,434 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Portfolio — [Your Name]</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Mono:wght@300;400;500&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --accent: #00FF94;
+      --bg: #0A0A0A;
+      --surface: #111111;
+      --border: #1E1E1E;
+      --text: #F0F0F0;
+      --muted: #666;
+      --font-display: 'Syne', sans-serif;
+      --font-mono: 'DM Mono', monospace;
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body { background: var(--bg); color: var(--text); font-family: var(--font-display); min-height: 100vh; }
+
+    /* ===== NAV ===== */
+    nav {
+      position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+      display: flex; justify-content: space-between; align-items: center;
+      padding: 1.2rem 2.5rem;
+      background: rgba(10,10,10,0.85);
+      backdrop-filter: blur(12px);
+      border-bottom: 1px solid var(--border);
+    }
+    .nav-logo { font-size: 1.1rem; font-weight: 800; letter-spacing: -0.03em; color: var(--text); }
+    .nav-logo span { color: var(--accent); }
+    .nav-links { display: flex; gap: 2rem; list-style: none; }
+    .nav-links a {
+      color: var(--muted); text-decoration: none;
+      font-family: var(--font-mono); font-size: 0.82rem;
+      letter-spacing: 0.05em; text-transform: uppercase;
+      transition: color 0.2s;
+    }
+    .nav-links a:hover, .nav-links a.active { color: var(--accent); }
+
+    /* ===== PAGES ===== */
+    .page { display: none; padding-top: 5rem; min-height: 100vh; }
+    .page.active { display: block; }
+
+    /* ===== HOME ===== */
+    #home {
+      display: none; align-items: center; justify-content: center;
+      text-align: center; min-height: 100vh;
+      position: relative; overflow: hidden;
+    }
+    #home.active { display: flex; }
+    .home-bg {
+      position: absolute; inset: 0;
+      background: radial-gradient(ellipse 60% 50% at 50% 60%, rgba(0,255,148,0.06) 0%, transparent 70%);
+    }
+    .home-grid {
+      position: absolute; inset: 0;
+      background-image: linear-gradient(var(--border) 1px, transparent 1px), linear-gradient(90deg, var(--border) 1px, transparent 1px);
+      background-size: 60px 60px; opacity: 0.4;
+    }
+    .home-content { position: relative; z-index: 1; max-width: 700px; padding: 2rem; }
+    .home-tag {
+      display: inline-block; font-family: var(--font-mono); font-size: 0.75rem;
+      letter-spacing: 0.15em; text-transform: uppercase; color: var(--accent);
+      border: 1px solid rgba(0,255,148,0.3); padding: 0.3rem 0.9rem; border-radius: 999px;
+      margin-bottom: 1.5rem; animation: fadeUp 0.6s ease both;
+    }
+    .home-title {
+      font-size: clamp(2.8rem, 7vw, 5rem); font-weight: 800;
+      line-height: 1.05; letter-spacing: -0.04em; animation: fadeUp 0.6s 0.1s ease both;
+    }
+    .home-title .accent { color: var(--accent); }
+    .home-sub {
+      margin-top: 1.2rem; font-family: var(--font-mono); font-size: 0.9rem;
+      color: var(--muted); line-height: 1.7; animation: fadeUp 0.6s 0.2s ease both;
+    }
+    .home-btns {
+      margin-top: 2.2rem; display: flex; gap: 1rem; justify-content: center;
+      flex-wrap: wrap; animation: fadeUp 0.6s 0.3s ease both;
+    }
+    .btn {
+      padding: 0.75rem 1.8rem; border-radius: 6px; font-family: var(--font-mono);
+      font-size: 0.82rem; letter-spacing: 0.05em; cursor: pointer;
+      text-decoration: none; border: none; transition: all 0.2s;
+    }
+    .btn-primary { background: var(--accent); color: #000; font-weight: 500; }
+    .btn-primary:hover { opacity: 0.85; transform: translateY(-1px); }
+    .btn-outline { background: transparent; color: var(--text); border: 1px solid var(--border); }
+    .btn-outline:hover { border-color: var(--accent); color: var(--accent); }
+
+    /* ===== SECTION COMMON ===== */
+    .section-header { max-width: 900px; margin: 0 auto 3rem; padding: 0 2rem; }
+    .section-label {
+      font-family: var(--font-mono); font-size: 0.72rem;
+      text-transform: uppercase; letter-spacing: 0.15em; color: var(--accent); margin-bottom: 0.5rem;
+    }
+    .section-title { font-size: clamp(2rem, 4vw, 3rem); font-weight: 800; letter-spacing: -0.03em; }
+    .section-desc { margin-top: 0.8rem; font-family: var(--font-mono); font-size: 0.85rem; color: var(--muted); line-height: 1.7; }
+    .container { max-width: 1000px; margin: 0 auto; padding: 3rem 2rem 5rem; }
+
+    /* ===== WORKS ===== */
+    .works-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+      gap: 1.5rem;
+    }
+
+    /* The card is a flex column so tags always sit at the bottom */
+    .work-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      overflow: hidden;
+      display: flex;
+      flex-direction: column;
+      transition: border-color 0.25s, transform 0.25s;
+    }
+    .work-card:hover { border-color: var(--accent); transform: translateY(-3px); }
+
+    .work-thumb {
+      position: relative; padding-bottom: 56.25%; background: #0d0d0d;
+      flex-shrink: 0;
+    }
+    .work-thumb video {
+      position: absolute; inset: 0;
+      width: 100%; height: 100%; border: none; background: #000;
+    }
+
+    /* Text area grows to fill space */
+    .work-info {
+      padding: 1.1rem 1.2rem 0.9rem;
+      display: flex; flex-direction: column; gap: 0.4rem;
+      flex: 1;
+    }
+    .work-title { font-size: 1rem; font-weight: 700; }
+    .work-desc { font-family: var(--font-mono); font-size: 0.78rem; color: var(--muted); line-height: 1.6; }
+
+    /* Tags container — always hugs the bottom of the card */
+    .work-tags-container {
+      border-top: 1px solid var(--border);
+      padding: 0.75rem 1.2rem 1rem;
+      display: flex; flex-wrap: wrap; gap: 0.45rem;
+      flex-shrink: 0;
+    }
+    .work-tag {
+      font-family: var(--font-mono); font-size: 0.65rem;
+      letter-spacing: 0.08em; text-transform: uppercase;
+      color: var(--accent);
+      border: 1px solid rgba(0,255,148,0.2);
+      border-radius: 4px; padding: 0.22rem 0.65rem;
+      background: rgba(0,255,148,0.06);
+      transition: background 0.15s, border-color 0.15s;
+    }
+    .work-card:hover .work-tag {
+      background: rgba(0,255,148,0.12);
+      border-color: rgba(0,255,148,0.45);
+    }
+
+    .works-empty {
+      text-align: center; padding: 4rem; color: var(--muted);
+      font-family: var(--font-mono); font-size: 0.85rem;
+      border: 1px dashed var(--border); border-radius: 10px; margin-top: 1.5rem;
+    }
+
+    /* ===== PRICING ===== */
+    .pricing-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(240px, 1fr)); gap: 1.5rem; }
+    .pricing-card {
+      background: var(--surface); border: 1px solid var(--border);
+      border-radius: 10px; padding: 2rem; position: relative; transition: border-color 0.25s;
+    }
+    .pricing-card.featured { border-color: var(--accent); }
+    .pricing-card.featured::before {
+      content: 'MOST POPULAR'; position: absolute; top: -1px; right: 1.5rem;
+      font-family: var(--font-mono); font-size: 0.65rem; letter-spacing: 0.12em;
+      background: var(--accent); color: #000; padding: 0.2rem 0.6rem; border-radius: 0 0 6px 6px;
+    }
+    .pricing-range { font-family: var(--font-mono); font-size: 0.75rem; color: var(--accent); letter-spacing: 0.08em; text-transform: uppercase; margin-bottom: 0.5rem; }
+    .pricing-price { font-size: 2.4rem; font-weight: 800; letter-spacing: -0.04em; }
+    .pricing-price sup { font-size: 1rem; font-weight: 600; margin-right: 2px; }
+    .pricing-price .plus { font-size: 1.2rem; }
+    .pricing-per { font-family: var(--font-mono); font-size: 0.75rem; color: var(--muted); margin-top: 0.2rem; }
+    .pricing-divider { height: 1px; background: var(--border); margin: 1.2rem 0; }
+    .pricing-features { list-style: none; font-family: var(--font-mono); font-size: 0.8rem; color: var(--muted); line-height: 2; }
+    .pricing-features li::before { content: '→ '; color: var(--accent); }
+    .pricing-note {
+      margin-top: 2rem; font-family: var(--font-mono); font-size: 0.8rem; color: var(--muted);
+      text-align: center; background: var(--surface); border: 1px solid var(--border);
+      border-radius: 8px; padding: 1.2rem;
+    }
+    .pricing-note strong { color: var(--text); }
+
+    /* ===== ABOUT ===== */
+    .about-layout { display: grid; grid-template-columns: 1fr 1fr; gap: 3rem; align-items: start; }
+    @media (max-width: 680px) { .about-layout { grid-template-columns: 1fr; } }
+    .about-name { font-size: clamp(2rem, 5vw, 3.5rem); font-weight: 800; letter-spacing: -0.04em; line-height: 1.1; }
+    .about-name .accent { color: var(--accent); }
+    .about-bio { margin-top: 1.2rem; font-family: var(--font-mono); font-size: 0.85rem; color: var(--muted); line-height: 1.9; }
+    .about-section-title { font-family: var(--font-mono); font-size: 0.72rem; text-transform: uppercase; letter-spacing: 0.15em; color: var(--accent); margin-bottom: 1rem; }
+    .stacks { display: flex; flex-wrap: wrap; gap: 0.6rem; }
+    .stack-badge {
+      font-family: var(--font-mono); font-size: 0.78rem; background: var(--surface);
+      border: 1px solid var(--border); border-radius: 6px; padding: 0.4rem 0.9rem;
+      transition: border-color 0.2s, color 0.2s;
+    }
+    .stack-badge:hover { border-color: var(--accent); color: var(--accent); }
+    .benefits { list-style: none; }
+    .benefits li {
+      font-family: var(--font-mono); font-size: 0.85rem; color: var(--muted);
+      padding: 0.9rem 0; border-bottom: 1px solid var(--border);
+      display: flex; align-items: baseline; gap: 0.7rem; line-height: 1.5;
+    }
+    .benefits li::before { content: '✦'; color: var(--accent); font-size: 0.7rem; flex-shrink: 0; }
+    .benefit-label { color: var(--text); font-weight: 500; }
+
+    /* ===== FOOTER ===== */
+    footer { border-top: 1px solid var(--border); text-align: center; padding: 2rem; font-family: var(--font-mono); font-size: 0.75rem; color: var(--muted); }
+    footer span { color: var(--accent); }
+
+    @keyframes fadeUp {
+      from { opacity: 0; transform: translateY(16px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+  </style>
+</head>
+<body>
+
+<nav>
+  <!-- ✏️ Change your logo/name here -->
+  <div class="nav-logo">dev<span>.</span>portfolio</div>
+  <ul class="nav-links">
+    <li><a href="#" onclick="showPage('home')" id="nav-home" class="active">Home</a></li>
+    <li><a href="#" onclick="showPage('works')" id="nav-works">Works</a></li>
+    <li><a href="#" onclick="showPage('pricing')" id="nav-pricing">Pricing</a></li>
+    <li><a href="#" onclick="showPage('about')" id="nav-about">About</a></li>
+  </ul>
+</nav>
+
+<!-- ===== HOME ===== -->
+<section id="home" class="page active">
+  <div class="home-bg"></div>
+  <div class="home-grid"></div>
+  <div class="home-content">
+    <div class="home-tag">Open for work</div><!-- ✏️ -->
+    <h1 class="home-title">Roblox<br><span class="accent">Developer</span><br>&amp; Scripter</h1><!-- ✏️ -->
+    <p class="home-sub">Fast, clean, and affordable development.<br>Quality scripts without the wait.</p><!-- ✏️ -->
+    <div class="home-btns">
+      <a href="#" class="btn btn-primary" onclick="showPage('works')">View My Work</a>
+      <a href="#" class="btn btn-outline" onclick="showPage('pricing')">See Pricing</a>
+    </div>
+  </div>
+</section>
+
+<!-- ===== WORKS ===== -->
+<section id="works" class="page">
+  <div class="container">
+    <div class="section-header">
+      <div class="section-label">Portfolio</div>
+      <h2 class="section-title">Past Works</h2>
+      <p class="section-desc">A showcase of projects I've built and delivered.</p>
+    </div>
+
+    <div class="works-grid" id="works-grid">
+      <!--
+        ✏️ HOW TO ADD A PROJECT:
+        1. Put your .mp4 in the "videos/" folder next to portfolio.html
+        2. Copy the block below, paste it here (outside this comment), fill it in
+
+        <div class="work-card">
+          <div class="work-thumb">
+            <video controls preload="metadata">
+              <source src="videos/YOUR_FILE.mp4" type="video/mp4" />
+            </video>
+          </div>
+          <div class="work-info">
+            <div class="work-title">Project Title</div>
+            <div class="work-desc">Short description of what this project does.</div>
+          </div>
+          <div class="work-tags-container">
+            <span class="work-tag">Tag One</span>
+            <span class="work-tag">Tag Two</span>
+          </div>
+        </div>
+
+        Remove <div class="work-tags-container">...</div> if no tags needed.
+      -->
+
+      <!-- YOUR CARDS GO HERE — example below, ready to use: -->
+
+      <div class="work-card">
+        <div class="work-thumb">
+          <video controls preload="metadata">
+            <source src="videos/Combo-based-combat-system.mp4" type="video/mp4" />
+          </video>
+        </div>
+        <div class="work-info">
+          <div class="work-title">Combo-Based Combat System</div><!-- ✏️ -->
+          <div class="work-desc">Short description of what this project does.</div><!-- ✏️ -->
+        </div>
+        <div class="work-tags-container">
+          <span class="work-tag">Luau</span><!-- ✏️ add/remove tags -->
+          <span class="work-tag">DataStore</span>
+          <span class="work-tag">UI</span>
+        </div>
+      </div>
+
+    </div>
+
+    <div class="works-empty" id="works-placeholder">
+      No projects added yet — check back soon!
+    </div>
+  </div>
+</section>
+
+<!-- ===== PRICING ===== -->
+<section id="pricing" class="page">
+  <div class="container">
+    <div class="section-header">
+      <div class="section-label">Rates</div>
+      <h2 class="section-title">Pricing</h2>
+      <p class="section-desc">Simple, transparent pricing. Billed per task based on estimated hours.</p>
+    </div>
+    <div class="pricing-grid">
+
+      <!-- ✏️ TIER 1 -->
+      <div class="pricing-card">
+        <div class="pricing-range">2 – 3 Hours</div>
+        <div class="pricing-price"><sup>$</sup>5</div>
+        <div class="pricing-per">per task</div>
+        <div class="pricing-divider"></div>
+        <ul class="pricing-features">
+          <li>Small scripts</li>
+          <li>Minor fixes</li>
+          <li>Quick UI tweaks</li>
+        </ul>
+      </div>
+
+      <!-- ✏️ TIER 2 -->
+      <div class="pricing-card">
+        <div class="pricing-range">4 – 6 Hours</div>
+        <div class="pricing-price"><sup>$</sup>7</div>
+        <div class="pricing-per">per task</div>
+        <div class="pricing-divider"></div>
+        <ul class="pricing-features">
+          <li>Medium-sized systems</li>
+          <li>Data store integration</li>
+          <li>Game mechanics</li>
+        </ul>
+      </div>
+
+      <!-- ✏️ TIER 3 -->
+      <div class="pricing-card">
+        <div class="pricing-range">6+ Hours</div>
+        <div class="pricing-price"><sup>$</sup>10<span class="plus">+</span></div>
+        <div class="pricing-per">per task</div>
+        <div class="pricing-divider"></div>
+        <ul class="pricing-features">
+          <li>Complex systems</li>
+          <li>Full game frameworks</li>
+          <li>Custom quoted price</li>
+        </ul>
+      </div>
+
+    </div>
+    <p class="pricing-note">
+      <strong>Not sure what tier your project falls in?</strong><br>
+      Reach out and I'll give you a free estimate before we start.
+    </p>
+  </div>
+</section>
+
+<!-- ===== ABOUT ===== -->
+<section id="about" class="page">
+  <div class="container">
+    <div class="about-layout">
+      <div>
+        <h1 class="about-name">Your<br><span class="accent">Name</span><br>Here.</h1><!-- ✏️ -->
+        <p class="about-bio">
+          Write a short description about yourself here. Talk about your experience,
+          what you love to build, your background in Roblox development, or anything
+          else you'd like potential clients to know about you.
+        </p><!-- ✏️ -->
+      </div>
+      <div style="display:flex; flex-direction:column; gap:2.5rem;">
+        <div>
+          <div class="about-section-title">Stacks &amp; Tools</div>
+          <div class="stacks">
+            <!-- ✏️ Add/remove badges -->
+            <span class="stack-badge">Rojo</span>
+            <span class="stack-badge">Git</span>
+            <span class="stack-badge">GitHub</span>
+            <span class="stack-badge">ProfileService</span>
+          </div>
+        </div>
+        <div>
+          <div class="about-section-title">Why Work With Me</div>
+          <ul class="benefits">
+            <!-- ✏️ Add/remove benefits -->
+            <li><span><span class="benefit-label">Fast Turnaround</span> — I deliver on time, every time, without cutting corners.</span></li>
+            <li><span><span class="benefit-label">Great Value</span> — Competitive pricing for polished, production-ready work.</span></li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<footer>
+  Built by <span>Your Name</span> · Portfolio<!-- ✏️ -->
+</footer>
+
+<script>
+  function updateWorksPlaceholder() {
+    const grid = document.getElementById('works-grid');
+    const placeholder = document.getElementById('works-placeholder');
+    if (!grid || !placeholder) return;
+    placeholder.style.display = grid.querySelectorAll('.work-card').length > 0 ? 'none' : 'block';
+  }
+
+  function showPage(id) {
+    document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+    document.querySelectorAll('.nav-links a').forEach(a => a.classList.remove('active'));
+    document.getElementById(id).classList.add('active');
+    document.getElementById('nav-' + id).classList.add('active');
+    window.scrollTo(0, 0);
+    if (id === 'works') updateWorksPlaceholder();
+  }
+
+  updateWorksPlaceholder();
+</script>
+</body>
+</html>
