@@ -305,6 +305,88 @@
     }
     .pricing-note strong { color: var(--text); }
 
+    /* ===== EXPERTISE ===== */
+    .expertise-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(min(300px, 100%), 1fr));
+      gap: 1.25rem;
+    }
+    .expertise-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      padding: 1.5rem 1.6rem;
+      transition: border-color 0.25s, transform 0.25s;
+      position: relative;
+      overflow: hidden;
+    }
+    .expertise-card::before {
+      content: '';
+      position: absolute;
+      top: 0; left: 0; right: 0;
+      height: 2px;
+      background: linear-gradient(90deg, transparent, var(--accent), transparent);
+      opacity: 0;
+      transition: opacity 0.3s;
+    }
+    .expertise-card:hover { border-color: rgba(0,255,148,0.4); transform: translateY(-3px); }
+    .expertise-card:hover::before { opacity: 1; }
+
+    .expertise-header {
+      display: flex; align-items: flex-start; justify-content: space-between;
+      gap: 1rem; margin-bottom: 1.1rem;
+    }
+    .expertise-icon {
+      width: 40px; height: 40px; border-radius: 8px;
+      background: rgba(0,255,148,0.08);
+      border: 1px solid rgba(0,255,148,0.15);
+      display: flex; align-items: center; justify-content: center;
+      font-size: 1.15rem; flex-shrink: 0;
+    }
+    .expertise-level-badge {
+      font-family: var(--font-mono); font-size: 0.62rem;
+      letter-spacing: 0.1em; text-transform: uppercase;
+      padding: 0.22rem 0.65rem; border-radius: 999px;
+      border: 1px solid; flex-shrink: 0; align-self: flex-start;
+    }
+    .level-advanced {
+      color: var(--accent);
+      border-color: rgba(0,255,148,0.35);
+      background: rgba(0,255,148,0.07);
+    }
+    .level-intermediate {
+      color: #FFB347;
+      border-color: rgba(255,179,71,0.35);
+      background: rgba(255,179,71,0.07);
+    }
+    .level-beginner {
+      color: #7EB8FF;
+      border-color: rgba(126,184,255,0.35);
+      background: rgba(126,184,255,0.07);
+    }
+
+    .expertise-name {
+      font-size: 1rem; font-weight: 700; letter-spacing: -0.02em; margin-bottom: 0.45rem;
+    }
+    .expertise-desc {
+      font-family: var(--font-mono); font-size: 0.76rem; color: var(--muted); line-height: 1.65;
+    }
+
+    .expertise-bar-wrap {
+      margin-top: 1.1rem;
+      height: 3px;
+      background: var(--border);
+      border-radius: 999px;
+      overflow: hidden;
+    }
+    .expertise-bar {
+      height: 100%; border-radius: 999px;
+      background: var(--accent);
+      transition: width 0.8s cubic-bezier(0.22, 1, 0.36, 1);
+    }
+    .expertise-bar.orange { background: #FFB347; }
+    .expertise-bar.blue   { background: #7EB8FF; }
+
     /* ===== ABOUT ===== */
     .about-layout { display: grid; grid-template-columns: 1fr 1fr; gap: 3rem; align-items: start; }
     .about-name { font-size: clamp(1.9rem, 7vw, 3.5rem); font-weight: 800; letter-spacing: -0.04em; line-height: 1.1; }
@@ -342,6 +424,7 @@
       .about-layout { grid-template-columns: 1fr; gap: 2rem; }
       .container { padding: 2rem 1rem 3.5rem; }
       .game-card { max-width: 100%; }
+      .expertise-grid { grid-template-columns: 1fr; }
     }
 
     @media (min-width: 641px) and (max-width: 900px) {
@@ -355,6 +438,8 @@
       .work-card:active { border-color: var(--accent); }
       .btn-primary:hover { opacity: 1; transform: none; }
       .btn-primary:active { opacity: 0.85; }
+      .expertise-card:hover { transform: none; border-color: var(--border); }
+      .expertise-card:active { border-color: rgba(0,255,148,0.4); }
     }
 
     @keyframes fadeUp {
@@ -372,6 +457,7 @@
     <li><a href="#" onclick="showPage('home'); return false;" id="nav-home" class="active">Home</a></li>
     <li><a href="#" onclick="showPage('works'); return false;" id="nav-works">Works</a></li>
     <li><a href="#" onclick="showPage('pricing'); return false;" id="nav-pricing">Pricing</a></li>
+    <li><a href="#" onclick="showPage('expertise'); return false;" id="nav-expertise">Expertise</a></li>
     <li><a href="#" onclick="showPage('about'); return false;" id="nav-about">About</a></li>
   </ul>
 
@@ -384,6 +470,7 @@
   <a href="#" onclick="showPage('home'); closeMobile(); return false;" id="mob-home" class="active">Home</a>
   <a href="#" onclick="showPage('works'); closeMobile(); return false;" id="mob-works">Works</a>
   <a href="#" onclick="showPage('pricing'); closeMobile(); return false;" id="mob-pricing">Pricing</a>
+  <a href="#" onclick="showPage('expertise'); closeMobile(); return false;" id="mob-expertise">Expertise</a>
   <a href="#" onclick="showPage('about'); closeMobile(); return false;" id="mob-about">About</a>
 </div>
 
@@ -625,6 +712,69 @@
   </div>
 </section>
 
+<!-- ===== EXPERTISE ===== -->
+<section id="expertise" class="page">
+  <div class="container">
+    <div class="section-header">
+      <div class="section-label">Skills</div>
+      <h2 class="section-title">Expertise</h2>
+      <p class="section-desc">A breakdown of my technical knowledge and where I stand in each area.</p>
+    </div>
+
+    <div class="expertise-grid" id="expertise-grid">
+
+      <div class="expertise-card">
+        <div class="expertise-header">
+          <div class="expertise-icon">⚡</div>
+          <span class="expertise-level-badge level-advanced">Advanced</span>
+        </div>
+        <div class="expertise-name">Optimization</div>
+        <div class="expertise-desc">Reducing unnecessary computation, minimizing RemoteEvent bandwidth with frameworks like ByteNet, and simulating effects client-side when appropriate.</div>
+        <div class="expertise-bar-wrap">
+          <div class="expertise-bar" style="width: 90%"></div>
+        </div>
+      </div>
+
+      <div class="expertise-card">
+        <div class="expertise-header">
+          <div class="expertise-icon">💾</div>
+          <span class="expertise-level-badge level-advanced">Advanced</span>
+        </div>
+        <div class="expertise-name">Datastore</div>
+        <div class="expertise-desc">Building reliable player data systems with ProfileStore, handling session locking, and ensuring data isn't lost</div>
+        <div class="expertise-bar-wrap">
+          <div class="expertise-bar" style="width: 85%"></div>
+        </div>
+      </div>
+
+      <div class="expertise-card">
+        <div class="expertise-header">
+          <div class="expertise-icon">🌀</div>
+          <span class="expertise-level-badge level-intermediate">Intermediate</span>
+        </div>
+        <div class="expertise-name">Physics</div>
+        <div class="expertise-desc">Working with constraints like LinearVelocity and AlignOrientation, applying forces for knockback and dashes, and avoiding jitter in physics-based movement.</div>
+        <div class="expertise-bar-wrap">
+          <div class="expertise-bar orange" style="width: 62%"></div>
+        </div>
+      </div>
+
+      <div class="expertise-card">
+        <div class="expertise-header">
+          <div class="expertise-icon">🗂️</div>
+          <span class="expertise-level-badge level-advanced">Advanced</span>
+        </div>
+        <div class="expertise-name">Organization</div>
+        <div class="expertise-desc">Structuring codebases with Rojo, Knit services, and modular patterns that keep large projects maintainable, readable, and easy to extend.</div>
+        <div class="expertise-bar-wrap">
+          <div class="expertise-bar" style="width: 92%"></div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
 <!-- ===== ABOUT ===== -->
 <section id="about" class="page">
   <div class="container">
@@ -698,6 +848,20 @@
     if (mobileLink) mobileLink.classList.add('active');
     window.scrollTo(0, 0);
     if (id === 'works') updateWorksPlaceholder();
+    if (id === 'expertise') animateBars();
+  }
+
+  function animateBars() {
+    const bars = document.querySelectorAll('.expertise-bar');
+    bars.forEach(bar => {
+      const target = bar.style.width;
+      bar.style.width = '0%';
+      requestAnimationFrame(() => {
+        requestAnimationFrame(() => {
+          bar.style.width = target;
+        });
+      });
+    });
   }
 
   function toggleMenu() {
