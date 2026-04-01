@@ -34,7 +34,6 @@
     .nav-logo { font-size: 1.05rem; font-weight: 800; letter-spacing: -0.03em; color: var(--text); flex-shrink: 0; }
     .nav-logo span { color: var(--accent); }
 
-    /* Desktop nav links */
     .nav-links { display: flex; gap: 1.5rem; list-style: none; }
     .nav-links a {
       color: var(--muted); text-decoration: none;
@@ -44,7 +43,6 @@
     }
     .nav-links a:hover, .nav-links a.active { color: var(--accent); }
 
-    /* Hamburger button */
     .hamburger {
       display: none;
       flex-direction: column; justify-content: center; align-items: center;
@@ -63,7 +61,6 @@
     .hamburger.open span:nth-child(2) { opacity: 0; }
     .hamburger.open span:nth-child(3) { transform: translateY(-6.5px) rotate(-45deg); }
 
-    /* Mobile drawer */
     .mobile-menu {
       display: none;
       position: fixed; top: 57px; left: 0; right: 0; z-index: 99;
@@ -129,9 +126,39 @@
       margin-top: 1.2rem; font-family: var(--font-mono); font-size: 0.88rem;
       color: var(--muted); line-height: 1.7; animation: fadeUp 0.6s 0.2s ease both;
     }
+
+    /* ===== STAT BADGE ===== */
+    .home-stat {
+      display: inline-flex; align-items: center; gap: 0.55rem;
+      margin-top: 1.4rem;
+      background: rgba(0,255,148,0.06);
+      border: 1px solid rgba(0,255,148,0.22);
+      border-radius: 8px;
+      padding: 0.55rem 1.1rem;
+      font-family: var(--font-mono);
+      animation: fadeUp 0.6s 0.25s ease both;
+    }
+    .home-stat-num {
+      font-size: 1.15rem; font-weight: 700; color: var(--accent); letter-spacing: -0.02em;
+    }
+    .home-stat-label {
+      font-size: 0.75rem; color: var(--muted); letter-spacing: 0.04em;
+    }
+    .home-stat-dot {
+      width: 6px; height: 6px; border-radius: 50%;
+      background: var(--accent);
+      box-shadow: 0 0 6px var(--accent);
+      animation: pulse 2s ease infinite;
+      flex-shrink: 0;
+    }
+    @keyframes pulse {
+      0%, 100% { opacity: 1; transform: scale(1); }
+      50% { opacity: 0.5; transform: scale(0.75); }
+    }
+
     .home-btns {
       margin-top: 2.2rem; display: flex; gap: 0.9rem; justify-content: center;
-      flex-wrap: wrap; animation: fadeUp 0.6s 0.3s ease both;
+      flex-wrap: wrap; animation: fadeUp 0.6s 0.35s ease both;
     }
     .btn {
       padding: 0.8rem 1.6rem; border-radius: 6px; font-family: var(--font-mono);
@@ -210,6 +237,47 @@
       border: 1px dashed var(--border); border-radius: 10px; margin-top: 1.5rem;
     }
 
+    /* ===== PAST GAMES ===== */
+    .past-games-section { margin-top: 3.5rem; }
+    .past-games-section .section-label { margin-bottom: 0.5rem; }
+    .past-games-section .section-title { font-size: clamp(1.4rem, 5vw, 2.2rem); margin-bottom: 1.5rem; }
+
+    .game-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      padding: 1.3rem 1.4rem;
+      display: flex;
+      align-items: center;
+      gap: 1.25rem;
+      transition: border-color 0.25s, transform 0.25s;
+      text-decoration: none;
+      color: inherit;
+      max-width: 520px;
+    }
+    .game-card:hover { border-color: var(--accent); transform: translateY(-2px); }
+    .game-icon {
+      width: 52px; height: 52px; border-radius: 10px;
+      background: linear-gradient(135deg, rgba(0,255,148,0.15), rgba(0,255,148,0.04));
+      border: 1px solid rgba(0,255,148,0.2);
+      display: flex; align-items: center; justify-content: center;
+      font-size: 1.5rem; flex-shrink: 0;
+    }
+    .game-info { flex: 1; min-width: 0; }
+    .game-name { font-size: 0.95rem; font-weight: 700; margin-bottom: 0.3rem; }
+    .game-meta {
+      font-family: var(--font-mono); font-size: 0.74rem; color: var(--muted);
+      display: flex; align-items: center; gap: 0.6rem; flex-wrap: wrap;
+    }
+    .game-visits {
+      color: var(--accent); font-weight: 500;
+    }
+    .game-link-icon {
+      color: var(--muted); font-size: 0.9rem; flex-shrink: 0;
+      transition: color 0.2s;
+    }
+    .game-card:hover .game-link-icon { color: var(--accent); }
+
     /* ===== PRICING ===== */
     .pricing-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(min(240px, 100%), 1fr)); gap: 1.25rem; }
     .pricing-card {
@@ -265,23 +333,15 @@
 
     /* ===== RESPONSIVE ===== */
     @media (max-width: 640px) {
-      /* Show hamburger, hide desktop nav */
       .hamburger { display: flex; }
       .nav-links { display: none; }
-
-      /* Home page tweaks */
       .home-content { padding: 1.5rem 1.25rem; }
       .home-btns { gap: 0.75rem; }
       .btn { padding: 0.75rem 1.35rem; font-size: 0.8rem; width: 100%; text-align: center; }
-
-      /* Pricing stacks to single column */
       .pricing-grid { grid-template-columns: 1fr; }
-
-      /* About stacks to single column */
       .about-layout { grid-template-columns: 1fr; gap: 2rem; }
-
-      /* Container padding */
       .container { padding: 2rem 1rem 3.5rem; }
+      .game-card { max-width: 100%; }
     }
 
     @media (min-width: 641px) and (max-width: 900px) {
@@ -290,7 +350,6 @@
       .about-layout { grid-template-columns: 1fr; gap: 2rem; }
     }
 
-    /* Touch-friendly tap targets */
     @media (hover: none) {
       .work-card:hover { transform: none; border-color: var(--border); }
       .work-card:active { border-color: var(--accent); }
@@ -309,7 +368,6 @@
 <nav>
   <div class="nav-logo">dev<span>.</span>portfolio</div>
 
-  <!-- Desktop links -->
   <ul class="nav-links">
     <li><a href="#" onclick="showPage('home'); return false;" id="nav-home" class="active">Home</a></li>
     <li><a href="#" onclick="showPage('works'); return false;" id="nav-works">Works</a></li>
@@ -317,13 +375,11 @@
     <li><a href="#" onclick="showPage('about'); return false;" id="nav-about">About</a></li>
   </ul>
 
-  <!-- Hamburger -->
   <button class="hamburger" id="hamburger" aria-label="Toggle menu" onclick="toggleMenu()">
     <span></span><span></span><span></span>
   </button>
 </nav>
 
-<!-- Mobile drawer -->
 <div class="mobile-menu" id="mobile-menu">
   <a href="#" onclick="showPage('home'); closeMobile(); return false;" id="mob-home" class="active">Home</a>
   <a href="#" onclick="showPage('works'); closeMobile(); return false;" id="mob-works">Works</a>
@@ -339,6 +395,11 @@
     <div class="home-tag">Open for work</div>
     <h1 class="home-title">Roblox<br><span class="accent">Developer</span><br>&amp; Scripter</h1>
     <p class="home-sub">Fast, clean, and affordable development.<br>Quality scripts for a low price.</p>
+    <div class="home-stat">
+      <div class="home-stat-dot"></div>
+      <span class="home-stat-num">100K+</span>
+      <span class="home-stat-label">visits contributed</span>
+    </div>
     <div class="home-btns">
       <a href="#" class="btn btn-primary" onclick="showPage('works'); return false;">View My Work</a>
       <a href="#" class="btn btn-outline" onclick="showPage('pricing'); return false;">See Pricing</a>
@@ -365,9 +426,7 @@
         </div>
         <div class="work-info">
           <div class="work-title">Battlegrounds combat system</div>
-          <div class="work-desc">
-            Combat system similar to roblox battlegrounds games
-          </div>
+          <div class="work-desc">Combat system similar to roblox battlegrounds games</div>
         </div>
         <div class="work-tags-container">
           <span class="work-tag">Combat</span>
@@ -384,9 +443,7 @@
         </div>
         <div class="work-info">
           <div class="work-title">Battlegrounds movement system</div>
-          <div class="work-desc">
-            Running and dash in a battlegrounds game.
-          </div>
+          <div class="work-desc">Running and dash in a battlegrounds game.</div>
         </div>
         <div class="work-tags-container">
           <span class="work-tag">Combat</span>
@@ -404,9 +461,7 @@
         </div>
         <div class="work-info">
           <div class="work-title">Combo-Based Combat System</div>
-          <div class="work-desc">
-            A combo-based combat system in Roblox Studio lets players chain attacks in sequence to deal more damage. This system includes air combos.
-          </div>
+          <div class="work-desc">A combo-based combat system in Roblox Studio lets players chain attacks in sequence to deal more damage. This system includes air combos.</div>
         </div>
         <div class="work-tags-container">
           <span class="work-tag">Combat</span>
@@ -443,9 +498,7 @@
         </div>
         <div class="work-info">
           <div class="work-title">Knockout gameplay</div>
-          <div class="work-desc">
-            The gameplay similar to "Knockout" on roblox
-          </div>
+          <div class="work-desc">The gameplay similar to "Knockout" on roblox</div>
         </div>
         <div class="work-tags-container">
           <span class="work-tag">Game systems</span>
@@ -453,7 +506,7 @@
         </div>
       </div>
 
-       <div class="work-card">
+      <div class="work-card">
         <div class="work-thumb">
           <video controls preload="metadata" playsinline>
             <source src="videos/Trade.mp4" type="video/mp4" />
@@ -461,9 +514,7 @@
         </div>
         <div class="work-info">
           <div class="work-title">Trade system</div>
-          <div class="work-desc">
-            Baddie, and lucky block trading system.
-          </div>
+          <div class="work-desc">Baddie, and lucky block trading system.</div>
         </div>
         <div class="work-tags-container">
           <span class="work-tag">UI</span>
@@ -490,9 +541,28 @@
 
     </div>
 
-    <div class="works-empty" id="works-placeholder">
+    <div class="works-empty" id="works-placeholder" style="display:none;">
       No projects added yet — check back soon!
     </div>
+
+    <!-- ===== PAST GAMES ===== -->
+    <div class="past-games-section">
+      <div class="section-label">Shipped</div>
+      <h3 class="section-title" style="font-size: clamp(1.4rem, 5vw, 2.2rem); margin-bottom: 1.5rem;">Past Games</h3>
+      <a
+        class="game-card"
+        href="https://www.roblox.com/games/101976476607331/Knockout-for-Baddies"
+        target="_blank"
+        rel="noopener noreferrer"
+      >
+        <div class="game-icon">🥊</div>
+        <div class="game-info">
+          <div class="game-name">Knockout for Baddies</div>
+        </div>
+        <div class="game-link-icon">↗</div>
+      </a>
+    </div>
+
   </div>
 </section>
 
@@ -559,7 +629,7 @@
       <div>
         <h1 class="about-name">My <br><span>name is </span><span class="accent"><br>Arc</span></h1>
         <p class="about-bio">
-          I’ve been scripting for two years, creating systems that are reliable, scalable, and optimized. I take pride in writing efficient code and can even point out performance issues in code I didn’t write.
+          I've been scripting for two years, creating systems that are reliable, scalable, and optimized. I take pride in writing efficient code and can even point out performance issues in code I didn't write.
         </p>
       </div>
       <div style="display:flex; flex-direction:column; gap:2.5rem;">
@@ -581,19 +651,16 @@
                 <span class="benefit-label">Great value for the price</span> — I offer competitive and affordable pricing while still delivering reliable, well-structured systems.
               </span>
             </li>
-
             <li>
               <span>
                 <span class="benefit-label">Consistent updates</span> — I keep clients informed throughout development by providing regular progress updates and estimated completion times.
               </span>
             </li>
-
             <li>
               <span>
                 <span class="benefit-label">Optimized systems</span> — I focus on performance-friendly solutions, including but not limited to reducing RemoteEvent bandwidth with techniques like using Zap or other frameworks to reduce bandwidth usage on remotes and simulating effects on the client when appropriate.
               </span>
             </li>
-
             <li>
               <span>
                 <span class="benefit-label">Flexible pricing</span> — I can adjust pricing depending on the project's scope and budget. In some cases, I may accept reduced payment combined with a percentage of the game's revenue (weekly or monthly), provided the project has strong potential and a capable development team. This does not mean I will work on entire projects for extremely low pay.
@@ -622,7 +689,6 @@
     document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
     document.querySelectorAll('.nav-links a, .mobile-menu a').forEach(a => a.classList.remove('active'));
     document.getElementById(id).classList.add('active');
-    // Update both desktop and mobile active states
     const desktopLink = document.getElementById('nav-' + id);
     const mobileLink = document.getElementById('mob-' + id);
     if (desktopLink) desktopLink.classList.add('active');
@@ -645,7 +711,6 @@
     document.getElementById('hamburger').classList.remove('open');
   }
 
-  // Close mobile menu when clicking outside
   document.addEventListener('click', function(e) {
     const menu = document.getElementById('mobile-menu');
     const btn = document.getElementById('hamburger');
