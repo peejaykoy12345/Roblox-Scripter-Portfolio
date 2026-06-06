@@ -344,6 +344,15 @@
     .gmeta-dot { color: var(--ac); }
     .gar { font-size: .78rem; color: var(--mut); flex-shrink: 0; transition: all .18s; }
 
+    /* Multi-game list */
+    .glist {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(min(400px, 100%), 1fr));
+      gap: .9rem;
+    }
+    /* Banner (16:9) image variant */
+    .gimg.banner { width: 108px; height: 60px; border-radius: 5px; }
+
     /* ===== PRICING ===== */
     .pgrid {
       display: grid;
@@ -686,19 +695,43 @@
       <div class="sdiv-l"></div>
     </div>
 
-    <a class="gc"
-       href="https://www.roblox.com/games/101976476607331/Knockout-for-Baddies"
-       target="_blank" rel="noopener noreferrer">
-      <div class="gimg" id="gthumb">🥊</div>
-      <div class="ginfo">
-        <div class="gname">Knockout for Baddies</div>
-        <div class="gmeta">
-          <span class="gmeta-dot">▸</span>
-          <span>roblox.com</span>
+    <div class="glist">
+
+      <a class="gc"
+         href="https://www.roblox.com/games/101976476607331/Knockout-for-Baddies"
+         target="_blank" rel="noopener noreferrer">
+        <div class="gimg" id="gthumb">
+          <img src="game-icons/knockout-for-baddies.webp" alt="Knockout for Baddies"
+               onerror="this.src='game-icons/knockout-for-baddies.jpg'" />
         </div>
-      </div>
-      <div class="gar">↗</div>
-    </a>
+        <div class="ginfo">
+          <div class="gname">Knockout for Baddies</div>
+          <div class="gmeta">
+            <span class="gmeta-dot">▸</span>
+            <span>roblox.com</span>
+          </div>
+        </div>
+        <div class="gar">↗</div>
+      </a>
+
+      <a class="gc"
+         href="https://www.roblox.com/games/135904738354036/Culling-Grounds"
+         target="_blank" rel="noopener noreferrer">
+        <div class="gimg banner">
+          <img src="game-icons/culling-grounds.webp" alt="Culling Grounds"
+               onerror="this.src='game-icons/culling-grounds.jpg'" />
+        </div>
+        <div class="ginfo">
+          <div class="gname">Culling Grounds</div>
+          <div class="gmeta">
+            <span class="gmeta-dot">▸</span>
+            <span>roblox.com</span>
+          </div>
+        </div>
+        <div class="gar">↗</div>
+      </a>
+
+    </div>
 
   </div>
 </section>
@@ -709,30 +742,31 @@
     <div class="ph">
       <div class="ph-eye">Rates</div>
       <h2 class="ph-h">Pricing</h2>
-      <p class="ph-d">Negotiable by project. Billed per task. Hours are dev time, not calendar time since commission start.</p>
+      <p class="ph-d">Negotiable by project. Billed per task. Hours are dev time — not calendar time since commission start.</p>
     </div>
 
     <div class="pgrid">
 
       <div class="pc">
-        <div class="ptier">&lt; 6 Hours</div>
-        <div class="pprice"><sup>$</sup>10</div>
+        <div class="ptier">&lt; 2 Hours</div>
+        <div class="pprice"><sup>$</sup>5–10</div>
         <div class="ptime">per task</div>
         <div class="pline"></div>
         <ul class="pfeats">
-          <li>Small systems (Economy, Leaderboard, etc)</li>
+          <li>Small systems (Shop, Teams, etc.)</li>
+          <li>Additions to existing systems (new weapon, move, etc.)</li>
           <li>Basic game mechanics</li>
         </ul>
       </div>
 
       <div class="pc feat">
-        <div class="ptier">6–24 Hours</div>
-        <div class="pprice"><sup>$</sup>11–20</div>
+        <div class="ptier">2–24 Hours</div>
+        <div class="pprice"><sup>$</sup>11–30</div>
         <div class="ptime">per task</div>
         <div class="pline"></div>
         <ul class="pfeats">
           <li>Full-sized systems (Combat, Parkour, etc.)</li>
-          <li>Additions to existing systems (new weapon, move, etc.)</li>
+          <li>Advanced game mechanics</li>
         </ul>
       </div>
 
@@ -742,8 +776,9 @@
         <div class="ptime">per task</div>
         <div class="pline"></div>
         <ul class="pfeats">
-          <li>Complex systems that takes most of the game (Combat, Parkour, etc.)</li>
-          <li>Advanced game mechanics</li>
+          <li>Complex systems taking multiple days</li>
+          <li>Custom quoted price</li>
+          <li>Rarely reaches this tier</li>
         </ul>
       </div>
 
@@ -751,7 +786,7 @@
 
     <p class="pnote">
       <strong>Not sure which tier your project falls into?</strong><br>
-      Reach out for a free estimate before we start. If you're reading this, send a 🔥 when DMing me. I want to see who actually checks this section.
+      Reach out for a free estimate before we start. If you're reading this, send a 🔥 when DMing me — I want to see who actually checks this section.
     </p>
   </div>
 </section>
@@ -835,23 +870,6 @@
     dg.appendChild(s);
   }
 
-  // ── Roblox game icon fetch
-  async function loadThumb() {
-    try {
-      const r = await fetch(
-        'https://thumbnails.roblox.com/v1/places/gameicons?placeIds=101976476607331&size=256x256&format=Png&isCircular=false',
-        { signal: AbortSignal.timeout(5000) }
-      );
-      if (!r.ok) throw new Error();
-      const d = await r.json();
-      const url = d.data?.[0]?.imageUrl;
-      if (url) {
-        const el = document.getElementById('gthumb');
-        if (el) el.innerHTML = `<img src="${url}" alt="Knockout for Baddies">`;
-      }
-    } catch (_) { /* keep emoji fallback */ }
-  }
-
   // ── Page switching
   const PAGES = ['home', 'works', 'pricing', 'about'];
 
@@ -864,7 +882,7 @@
       if (m) m.classList.toggle('on', p === id);
     });
     window.scrollTo(0, 0);
-    if (id === 'works') loadThumb();
+
   }
 
   function toggleM() {
