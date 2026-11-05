@@ -1,6 +1,6 @@
 # Portfolio analytics
 
-The Google Analytics 4 integration is installed but **does not send data until you configure a real measurement ID**. The ID is public; no API key or secret belongs in this repository. No Google account/property has been created by this change.
+The Google Analytics 4 integration is configured with measurement ID `G-FQ9VSLVNW9`. Collection begins on the deployed site only after a visitor allows analytics. Verify delivery in GA Realtime after deployment. The ID is public; no API key or secret belongs in this repository. No Google account/property has been created by this change.
 
 ## Activate and view your dashboard
 

@@ -1,5 +1,5 @@
 /* Paste your public GA4 web-stream measurement ID here. Never paste API secrets. */
-const GA_MEASUREMENT_ID = '';
+const GA_MEASUREMENT_ID = 'G-FQ9VSLVNW9';
 
 (() => {
   const configured = /^G-[A-Z0-9]+$/.test(GA_MEASUREMENT_ID);
