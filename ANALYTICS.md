@@ -1,6 +1,6 @@
 # Portfolio analytics
 
-The Google Analytics 4 integration is configured with measurement ID `G-FQ9VSLVNW9`. Collection begins on the deployed site only after a visitor allows analytics. Verify delivery in GA Realtime after deployment. The ID is public; no API key or secret belongs in this repository. No Google account/property has been created by this change.
+The Google Analytics 4 integration is configured with measurement ID `G-FQ9VSLVNW9`. Collection starts automatically on the deployed site. Visitors who previously declined remain excluded. Verify delivery in GA Realtime after deployment. The ID is public; no API key or secret belongs in this repository. No Google account/property has been created by this change.
 
 ## Activate and view your dashboard
 
@@ -8,7 +8,7 @@ The Google Analytics 4 integration is configured with measurement ID `G-FQ9VSLVN
 2. Add a **Web** data stream using your portfolio's public website address. Copy its measurement ID, formatted `G-XXXXXXXXXX`.
 3. Set `GA_MEASUREMENT_ID` at the top of `analytics.js` to that ID and deploy/push the update. Alternatively, send the public ID to your coding assistant to make that update. Do not send your password or private credentials.
 4. In the stream's **Enhanced measurement** settings, disable automatic page changes from browser history and outbound clicks if enabled: this site sends explicit tab page views and outbound events. Native HTML video events are also tracked by this integration.
-5. Open the deployed portfolio, choose **Allow analytics**, visit Works, play a project video, and switch tabs. In Analytics, open **Reports → Realtime** to check incoming events. Ad blockers or browser privacy settings may prevent collection. Standard reports usually take 24–48 hours to populate.
+5. Open the deployed portfolio, visit Works, play a project video, and switch tabs. In Analytics, open **Reports → Realtime** to check incoming events. Ad blockers or browser privacy settings may prevent collection. Standard reports usually take 24–48 hours to populate.
 
 ## Reports
 
@@ -27,8 +27,8 @@ The Google Analytics 4 integration is configured with measurement ID `G-FQ9VSLVN
 | `project_video_play` / `project_video_pause` / `project_video_ended` | Native video playback actions | `project_name`, `video_position` |
 | `project_video_progress` | First crossing of 25%, 50%, 75% during a playback | `project_name`, `video_percent` |
 
-Time events send incremental totals every 15 seconds, on tab changes, playback actions, and document hiding/leaving. Sum the custom metrics by project or tab in Explore. These are approximate visible-page/playback times, not proof of attention. Seeking can trigger progress milestones; milestones do not prove continuous viewing. Tab switches pause project videos. Network loss, background timer throttling, abrupt closure, consent refusal and blockers can reduce recorded data. An offline mocked test validates integration behavior; delivery to a real GA property must be checked after activation.
+Time events send incremental totals every 15 seconds, on tab changes, playback actions, and document hiding/leaving. Sum the custom metrics by project or tab in Explore. These are approximate visible-page/playback times, not proof of attention. Seeking can trigger progress milestones; milestones do not prove continuous viewing. Tab switches pause project videos. Network loss, background timer throttling, abrupt closure, a previously saved refusal and blockers can reduce recorded data. An offline mocked test validates integration behavior; delivery to a real GA property must be checked after activation.
 
-## Privacy and consent
+## Privacy
 
-The Google script loads only after the visitor allows analytics. Declining leaves it unloaded. Analytics preferences lets a visitor withdraw consent, disables future event dispatch and removes accessible GA cookies. Withdrawal does not delete already collected data from Google. No name, Discord account or Roblox account is collected by this code. GA may distinguish pseudonymous browsers, not reliably identify individual people. Outbound URLs omit query strings and fragments. Use your GA account's retention and data controls appropriately. The consent choice itself is stored locally so the site can remember it.
+There is no analytics prompt or preferences button. Analytics starts automatically, except for visitors with a previously saved decline choice. No name, Discord account or Roblox account is collected by this code. Google Analytics uses cookies and pseudonymous browser identifiers; it does not reliably identify individual people. Outbound URLs omit query strings and fragments. Google Signals and advertising personalization are disabled. Use your GA account's retention and data controls appropriately.

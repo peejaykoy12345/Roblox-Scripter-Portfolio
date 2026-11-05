@@ -4,8 +4,6 @@ const GA_MEASUREMENT_ID = 'G-FQ9VSLVNW9';
 (() => {
   const configured = /^G-[A-Z0-9]+$/.test(GA_MEASUREMENT_ID);
   const preferenceKey = 'arc-analytics-consent';
-  const panel = document.getElementById('analytics-consent');
-  const settings = document.getElementById('analytics-settings');
   let enabled = false;
   let loaded = false;
   let activeTab = document.querySelector('.page.on')?.id || 'home';
@@ -65,35 +63,12 @@ const GA_MEASUREMENT_ID = 'G-FQ9VSLVNW9';
     lastTick = performance.now();
     pageView();
   }
-  function store(value) { try { localStorage.setItem(preferenceKey, value); } catch {} }
-  function choose(allow) {
-    if (allow) { store('granted'); if (!enabled) enable(); }
-    else {
-      enabled = false;
-      window[`ga-disable-${GA_MEASUREMENT_ID}`] = true;
-      tabSeconds = 0;
-      projects.forEach(p => { p.viewSeconds = p.watchSeconds = 0; p.milestones.clear(); });
-      store('denied');
-      // Remove GA cookies on this host and parent domains after withdrawal.
-      document.cookie.split(';').forEach(cookie => {
-        const name = cookie.trim().split('=')[0];
-        if (!/^_ga(?:_|$)/.test(name)) return;
-        document.cookie = `${name}=; Max-Age=0; path=/`;
-        const parts = location.hostname.split('.');
-        for (let i = 0; i < parts.length - 1; i++) document.cookie = `${name}=; Max-Age=0; path=/; domain=.${parts.slice(i).join('.')}`;
-      });
-    }
-    panel.hidden = true;
-  }
-  if (!configured) { panel.hidden = true; settings.hidden = true; return; }
-  settings.hidden = false;
-  settings.addEventListener('click', () => { panel.hidden = false; });
-  document.getElementById('analytics-accept').addEventListener('click', () => choose(true));
-  document.getElementById('analytics-decline').addEventListener('click', () => choose(false));
-  let saved;
-  try { saved = localStorage.getItem(preferenceKey); } catch {}
-  panel.hidden = saved === 'granted' || saved === 'denied';
-  if (saved === 'granted') enable();
+  if (!configured) return;
+  // Respect visitors who previously declined analytics.
+  let previouslyDeclined = false;
+  try { previouslyDeclined = localStorage.getItem(preferenceKey) === 'denied'; } catch {}
+  if (previouslyDeclined) return;
+  enable();
   document.addEventListener('portfolio:tab', e => {
     sample(); flush(); activeTab = e.detail; lastTick = performance.now(); pageView();
     projects.forEach(p => { if (activeTab !== 'works') p.video.pause(); });
