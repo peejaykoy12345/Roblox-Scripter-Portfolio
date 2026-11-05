@@ -14,7 +14,8 @@ const GA_MEASUREMENT_ID = 'G-FQ9VSLVNW9';
     viewSeconds: 0, watchSeconds: 0, milestones: new Set()
   }));
   window.dataLayer = window.dataLayer || [];
-  const gtag = (...args) => window.dataLayer.push(args);
+  // Google's command queue expects Arguments objects, as in the official snippet.
+  function gtag() { window.dataLayer.push(arguments); }
   function event(name, params = {}) {
     if (enabled) gtag('event', name, { ...params, transport_type: 'beacon' });
   }
